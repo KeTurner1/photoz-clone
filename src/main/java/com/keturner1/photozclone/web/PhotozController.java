@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.Collection;
 
 @RestController
 public class PhotozController {
@@ -19,27 +18,26 @@ public class PhotozController {
         this.photoService = photoService;
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/")
     public String hello() {
         return "Hello, World!";
     }
 
     @GetMapping("/photoz")
-    public Collection<Photo> get() {
-        return photoService.findAll();
+    public Iterable<Photo> get() {
+        return photoService.get();
     }
 
     @GetMapping("/photoz/{id}")
-    public Photo get(@PathVariable String id) {
+    public Photo get(@PathVariable Integer id) {
         Photo photo = photoService.get(id);
         if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return photoService.get(id);
     }
 
     @DeleteMapping("/photoz/{id}")
-    public void delete(@PathVariable String id) {
-        Photo photo = photoService.remove(id);
-        if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public void delete(@PathVariable Integer id) {
+        photoService.remove(id);
     }
 
     @PostMapping("/photoz")

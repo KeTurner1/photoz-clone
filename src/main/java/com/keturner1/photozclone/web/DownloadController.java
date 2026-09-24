@@ -18,19 +18,19 @@ public class DownloadController {
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<byte[]> download(@PathVariable String id) {
+    public ResponseEntity<byte[]> download(@PathVariable Integer id) {
         Photo photo = photoService.get(id);
-
         if (photo == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         byte[] data = photo.getData();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(photo.getType()));
-        ContentDisposition builder = ContentDisposition.builder("attachment")
+        ContentDisposition builder = ContentDisposition
+                .builder("attachment")
                 .filename(photo.getName())
                 .build();
-
         headers.setContentDisposition(builder);
+        
         return new ResponseEntity<>(data, headers, HttpStatus.OK);
     }
 }
